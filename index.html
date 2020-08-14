@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Sumanta Test</title>
+  <style>
+.wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  padding: 15px;
+}
+
+.leftBox {
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  order: 1;
+}
+
+.box {
+  display: flex;
+  box-sizing: border-box;
+  width: 33.3%;
+  height: 150px;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 500;
+  background-color: #BFBFBF;
+}
+.box_1 {
+  background-color: #6F98A8;
+}
+.box_2 {
+  background-color: #2B8EAD;
+}
+.box_3 {
+  background-color: #333333;
+}
+.box_4 {
+  background-color: #2B8EAD;
+}
+.box_5 {
+  background-color: #333333;
+}
+.box_6 {
+  background-color: #BFBFBF;
+}
+.box_7 {
+  background-color: #BFBFBF;
+}
+.box_8 {
+  background-color: #6F98A8;
+}
+.box_9 {
+  background-color: #333333;
+}
+
+.rightBox {
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  order: 2;
+  padding: 10px 0px;
+}
+.rightBox button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 7.5px;
+  width: 100px;
+  background-color: #2B8EAD;
+  border: none;
+  border-radius: 5px;
+  margin: 0px 7.5px;
+  height: 40px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .wrapper {
+    flex-direction: column;
+  }
+  .rightBox {
+    order: 1;
+    width: 100%;
+  }
+  .leftBox {
+    order: 2;
+    width: 100%;
+  }
+  .box {
+    width: 100%;
+    background-color: #BFBFBF !important;
+    margin-bottom: 2px;
+    height: 50px;
+    font-size: 20px;
+  }
+.box_1 {
+  border-left: solid 7.5px #6F98A8;
+}
+.box_2 {
+  border-left: solid 7.5px #2B8EAD;
+}
+.box_3 {
+  border-left: solid 7.5px #333333;
+}
+.box_4 {
+  border-left: solid 7.5px #2B8EAD;
+}
+.box_5 {
+  border-left: solid 7.5px #333333;
+}
+.box_6 {
+  border-left: solid 7.5px #BFBFBF;
+}
+.box_7 {
+  border-left: solid 7.5px #BFBFBF;
+}
+.box_8 {
+  border-left: solid 7.5px #6F98A8;
+}
+.box_9 {
+  border-left: solid 7.5px #333333;
+}
+}
+  </style>
+</head>
+<body>
+  <section class="wrapper">
+    <div class="rightBox">
+      <button onclick="action({list: [1,2,3,4,5,6,7,8,9], type: 'shuffle'})">SHUFFLE</button>
+      <button onclick="action({list: window.localStorage.getItem('list'), type: 'sort'})">SORT</button>
+    </div>
+    <div class="leftBox" id="leftBox">
+      <div class="box box_1">1</div>
+      <div class="box box_2">2</div>
+      <div class="box box_3">3</div>
+      <div class="box box_4">4</div>
+      <div class="box box_5">5</div>
+      <div class="box box_6">6</div>
+      <div class="box box_7">7</div>
+      <div class="box box_8">8</div>
+      <div class="box box_9">9</div>
+    </div>
+  </section>
+  <script>
+  function action(params) {
+    const { list, type } = params || {};
+    var parentNode = document.getElementById("leftBox");
+    if (['shuffle'].includes(type)) {
+      var array = [].concat(list);
+      var currentIndex = array.length, temporaryValue, randomIndex;
+      var mainContainer = document.getElementById('leftBox');
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+      // Reset Element
+      parentNode.innerHTML = '';
+      for(var i = 0; i < array.length; i++) {
+        const divBlock = document.createElement("div");
+        const content = document.createTextNode(array[i]);  
+        divBlock.appendChild(content);           
+        divBlock.className = `box box_${array[i]}`;
+        parentNode.appendChild(divBlock);
+      }
+      window.localStorage.setItem('list', array);
+      return array;
+    }
+    if (['sort'].includes(type)) {
+      const _split = list.split(',');
+      var _local = [];
+      _split.map(ele => _local.push(parseInt(ele)));
+      const _sortarray = _local.sort();
+      parentNode.innerHTML = '';
+      for(var i = 0; i < _sortarray.length; i++) {
+        const divBlock = document.createElement("div");
+        const content = document.createTextNode(_sortarray[i]);  
+        divBlock.appendChild(content);
+        divBlock.className = `box box_${_sortarray[i]}`;
+        parentNode.appendChild(divBlock);
+      }
+    }
+  }
+  </script>
+</body>
+</html>
